@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeScribe Examples</title>
+
+    <script>
+        function loadJS(v){
+            var d=document, h=d.getElementsByTagName('head')[0], newScript;
+            try {h.removeChild(d.getElementById('lib_lang'));} catch (e){}
+            newScript      = d.createElement('script');
+            newScript.id   = 'lib_lang';
+            newScript.type = 'text/javascript';
+            var curUrl = window.location.href;
+            newScript.src  = curUrl.substring(0, curUrl.lastIndexOf('/')) +'/'+v;
+
+            h.appendChild(newScript);
+
+            d.getElementById('right').src=newScript.src;
+
+        }
+    </script>
+
+    <style>
+        body{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+        #left{
+            position: absolute;
+            left: 0;
+            width:50%;
+            height: 100%;
+            background: #ccc;
+        }
+
+        #right{
+            position: absolute;
+            left: 50%;
+            width:50%;
+            height: 100%;
+            background: #EEE;
+            overflow-y:scroll;
+            padding: 2em;
+        }
+
+    </style>
+</head>
+<body>
+<div id="left">
+<canvas id="drawingCanvas" width="640" height="360" style="background: #EEEEEE;"></canvas>
+<br>
+<select onchange="loadJS(this.value)">
+    <option selected="selected" disabled="true"> Select an example</option>
+    <option value="breakout.js">Breakout.js</option>
+</select>
+</div>
+<iframe id="right">
+</iframe>
+</body>
+</html>
