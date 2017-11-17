@@ -5,14 +5,12 @@ var display = playArea.getContext("2d");
 var ballRadius = 10;
 var ballX = playArea.width / 2; //Setting initial horizontal ball location to center of the play area
 var ballY = playArea.height - 30; //Setting initial vertical ball location to just above the paddle
-var ballMoveX = 2;
-var ballMoveY = -2;
 var paddleHeight = 10;
 var paddleWidth = 75;
 var paddleX = (playArea.width - paddleWidth) / 2;
 
-var brickRowCount = 7;
-var brickColumnCount = 3;
+var brickRowTotal = 7;
+var brickColumnTotal = 3;
 var brickWidth = 75;
 var brickHeight = 20;
 
@@ -20,9 +18,12 @@ var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 
-var score = 0;
-var lives = 3;
-var bricks = [];
+//We'll set these in setup
+var ballMoveX;
+var ballMoveY;
+var score;
+var lives;
+var bricks = []; //array that holds all the bricks
 var playerWon = false;
 
 
@@ -40,10 +41,10 @@ function setup() {
     playerWon = false;
 
     //Arrange and initialize the bricks
-    for (column = 0; column < brickColumnCount; column++) {
-        bricks[column] = [];
-        for (row = 0; row < brickRowCount; row++) {
-            bricks[column][row] = {x: 0, y: 0, alive: 1};
+    for (currentColumn = 0; currentColumn < brickColumnTotal; currentColumn++) {
+        bricks[currentColumn] = [];
+        for (currentRow = 0; currentRow < brickRowTotal; currentRow++) {
+            bricks[currentColumn][currentRow] = {x: 0, y: 0, alive: 1};
         }
     }
 }
@@ -60,9 +61,9 @@ function mouseClickHandler(e){
 }
 
 function collisionDetection() {
-    for (column = 0; column < brickColumnCount; column++) {
-        for (row = 0; row < brickRowCount; row++) {
-            var brickToCheck = bricks[column][row];
+    for (currentColumn = 0; currentColumn < brickColumnTotal; currentColumn++) {
+        for (currentRow = 0; currentRow < brickRowTotal; currentRow++) {
+            var brickToCheck = bricks[currentColumn][currentRow];
             if (brickToCheck.alive == 1) {
                 if (ballX > brickToCheck.x &&
                     ballX < brickToCheck.x + brickWidth &&
@@ -79,7 +80,7 @@ function collisionDetection() {
 }
 
 function checkForWin(){
-    if (score >= brickRowCount * brickColumnCount) {
+    if (score >= brickRowTotal * brickColumnTotal) {
         playerWon = true;
         drawYouWin();
     }
@@ -106,13 +107,13 @@ function drawPaddle() {
     display.closePath();
 }
 function drawBricks() {
-    for (column = 0; column < brickColumnCount; column++) {
-        for (row = 0; row < brickRowCount; row++) {
-            if (bricks[column][row].alive == 1) {
-                var brickX = (row * (brickWidth + brickPadding)) + brickOffsetLeft;
-                var brickY = (column * (brickHeight + brickPadding)) + brickOffsetTop;
-                bricks[column][row].x = brickX;
-                bricks[column][row].y = brickY;
+    for (currentColumn = 0; currentColumn < brickColumnTotal; currentColumn++) {
+        for (currentRow = 0; currentRow < brickRowTotal; currentRow++) {
+            if (bricks[currentColumn][currentRow].alive == 1) {
+                var brickX = (currentRow * (brickWidth + brickPadding)) + brickOffsetLeft;
+                var brickY = (currentColumn * (brickHeight + brickPadding)) + brickOffsetTop;
+                bricks[currentColumn][currentRow].x = brickX;
+                bricks[currentColumn][currentRow].y = brickY;
                 display.beginPath();
                 display.rect(brickX, brickY, brickWidth, brickHeight);
                 display.fillStyle = "#0095DD";
